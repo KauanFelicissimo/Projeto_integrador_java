@@ -68,9 +68,11 @@ public class principal {
                     
                     case 2 : 
                         menuClientes(matrizClientes, matrizContatos);
-                        break;                                              
+                        break;  
+                    case 3 :
+                        menuContatos(matrizContatos);
                     case 0 : System.out.println("\nEncerrando sistema...");
-                        
+                        break;
                     default : System.out.println("\nOpção inválida! Tente novamente.");
                 }
             } catch (NumberFormatException e) {
@@ -102,6 +104,7 @@ public class principal {
             
             switch(opcao) {
                 case 1: 
+                    matrizClientes = incluirCliente(matrizClientes);
                     break;
                 case 2:
                     listarClientes(matrizClientes);
@@ -124,7 +127,7 @@ public class principal {
     }
         
         
-    private static void menuContatos(){
+    private static void menuContatos(String [][] matrizContatos){
             int opcao = -1;
             
             Scanner scanner = new Scanner(System.in);
@@ -140,7 +143,7 @@ public class principal {
             System.out.println("====================================");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
-            }
+            
             
             switch(opcao) {
                 case 1: 
@@ -148,8 +151,10 @@ public class principal {
                 case 2:
                     break;
                 case 3:
+                    listarContatos(matrizContatos);
                     break;
                 case 4:
+                    alteracaoContatos(matrizContatos);
                     break;
                 case 5:
                     break;
@@ -157,7 +162,7 @@ public class principal {
                     break;
                 default :
             }
-            
+            }
         }
 
         
@@ -222,22 +227,44 @@ public class principal {
         } else {
             System.out.print("Codigo  | ");
             System.out.print("Nome    | ");
-            System.out.print("Idade   | ");
+            System.out.print("CPF/CNPJ   | ");
+            System.out.print("Data_Nascimento    | ");
             System.out.print("Sexo    | ");
             System.out.print("Cidade  | ");
             System.out.print("Estado  | ");
             System.out.println("Status");
             System.out.println("----------------------------------------------");
             for (int i = 0; i < matrizClientes.length; i++) {
-                System.out.print(i + " | ");                
+                System.out.print(" | ");
+                System.out.print(matrizClientes[i][0] + " | ");
                 System.out.print(matrizClientes[i][1] + " | ");
                 System.out.print(matrizClientes[i][2] + " | ");
                 System.out.print(matrizClientes[i][3] + " | ");
                 System.out.print(matrizClientes[i][4] + " | ");
-                System.out.println(matrizClientes[i][5]);
+                System.out.print(matrizClientes[i][5] + " | ");
+                System.out.println(matrizClientes[i][6]);
             }
         }
     }
+    private static void listarContatos(String[][] matrizContatos){
+        if(matrizContatos.length == 0){
+            System.out.println("Nenhum cadastro");
+        } else {
+            System.out.print("CodCont  | ");
+            System.out.print("CodCli   | ");
+            System.out.print("Tipo    | ");
+            System.out.print("Valor   | ");
+            System.out.println("Status");
+            System.out.println("----------------------------------------------");
+            for (int i = 0; i < matrizContatos.length; i++) {
+                System.out.print(i + " | ");
+                System.out.print(matrizContatos[i][0] + " | ");
+                System.out.print(matrizContatos[i][1] + " | ");
+                System.out.print(matrizContatos[i][2] + " | ");
+                System.out.println(matrizContatos[i][3]);
+            }
+        }
+    }   
     
     /**
      * Carrega contatos do arquivo contatos.csv
@@ -322,14 +349,15 @@ String [][] novaMatriz = new String [matrizContatos.length + 1] [5];
         int contador = 0;
         System.out.println("Qual cliente deseja alterar");
         String codCliente = scanner.nextLine();    
+        
         for(int i = 0; i < matrizClientes.length; i ++){
         if(codCliente.equals(matrizClientes[contador][0])){           
-           for (int j = 0; j < 8; j++) {
+           for (int j = 1; j < matrizClientes[contador].length; j++) {
                 System.out.println("Altere os dados do cliente indice[" + j + "]");
                 String dadosNovos = scanner.nextLine();
                 matrizClientes[contador][j] = dadosNovos;
             }
-           break;
+           
             
         } else{
             contador++;
@@ -339,5 +367,63 @@ String [][] novaMatriz = new String [matrizContatos.length + 1] [5];
         return matrizClientes;
     }
     
+    private static String [][] alteracaoContatos(String [][] matrizContatos){
+        Scanner scanner = new Scanner(System.in);
+        int contador = 0;
+        System.out.println("Qual contato deseja alterar:");
+        String codContato = scanner.nextLine();
+        for (int i = 0; i < matrizContatos.length; i++) {
+            if(codContato.equals(matrizContatos[contador][0]))
+            {
+                for(int j = 1; j < matrizContatos[contador].length; j++) {
+                    System.out.println("Altere os dados de contado no indice[" + j + "]");
+                    String dadosNovos = scanner.nextLine();
+                    matrizContatos[contador][j] = dadosNovos;
+                }
+                break;
+            } else {
+                contador++;
+            }
+        }
+        return matrizContatos;
+    }
+    
+   public static String[][] incluirCliente(String[][] matrizClientes) {
+        Scanner leia = new Scanner(System.in);  
+        int novoId;
+        if(matrizClientes.length == 0){
+            novoId = 1;
+        } else {
+            int ultimoId = Integer.parseInt(matrizClientes[matrizClientes.length - 1] [0]);
+            novoId = ultimoId + 1;
+        }
+        System.out.println("====== INCLUIR CLIENTE =======");
+        System.out.println("Nome:");
+        String nome = leia.nextLine();
+        System.out.println("CPF/CNPJ:");
+        String cpf = leia.nextLine();
+        System.out.println("Data de nascimento: (d/m/a)");
+        String nascimento = leia.nextLine();
+        System.out.println("Sexo: (M/F)");
+        String sexo = leia.nextLine();
+        System.out.println("Cidade:");
+        String cidade = leia.nextLine();
+        System.out.println("Estado: (Uf)");
+        String estado = leia.nextLine();
+        System.out.println("Status: (ativo/inativo)");
+        String status = leia.nextLine();
+        matrizClientes = aumentarMatrizClientes(matrizClientes);
+        int ultimaLinha = matrizClientes.length -1;
+        matrizClientes[ultimaLinha][0] = String.valueOf(novoId);
+        matrizClientes[ultimaLinha][1] = nome;
+        matrizClientes[ultimaLinha][2] = cpf;
+        matrizClientes[ultimaLinha][3] = nascimento;
+        matrizClientes[ultimaLinha][4] = sexo;
+        matrizClientes[ultimaLinha][5] = cidade;
+        matrizClientes[ultimaLinha][6] = estado;
+        matrizClientes[ultimaLinha][7] = status;
+
+        return matrizClientes;
+    }
 
 }
