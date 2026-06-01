@@ -71,6 +71,10 @@ public class principal {
                         break;  
                     case 3 :
                         menuContatos(matrizContatos);
+                        break;
+                    case 4: 
+                        menuRelatorios(matrizClientes, matrizContatos);
+                        break;
                     case 0 : System.out.println("\nEncerrando sistema...");
                         break;
                     default : System.out.println("\nOpção inválida! Tente novamente.");
@@ -96,7 +100,7 @@ public class principal {
             System.out.println("4 - alterar cliente");
             System.out.println("5 - Apagar clientes");
             System.out.println("6 - Ordenar por nome");
-            System.out.println("0 - votlar");
+            System.out.println("0 - Voltar");
             System.out.println("====================================");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt(); 
@@ -118,6 +122,7 @@ public class principal {
                     matrizClientes = excluirClientes(matrizClientes);
                     break;
                 case 6:
+                    ordenarClientes(matrizClientes);
                     break;
                 case 0:
                     break;
@@ -165,6 +170,45 @@ public class principal {
             }
             }
         }
+    
+    public static void menuRelatorios (String[][] matrizClientes, String[][] matrizContatos) {
+        int opcao = -1;
+        Scanner scanner = new Scanner(System.in);
+        
+        while (opcao != 0) {
+            System.out.println("\n========== MENU RELATORIOS ==========");
+            System.out.println("1 - Total de Clientes");
+            System.out.println("2 - Total de Contatos");
+            System.out.println("3 - Media de Contatos por Cliente");
+            System.out.println("4 - Total de Clientes sem Contatos");
+            System.out.println("0 - Voltar");
+            System.out.println("====================================");
+            System.out.print("Escolha uma opção: ");
+            opcao = scanner.nextInt(); 
+            
+            
+            switch(opcao) {
+                case 1: 
+                    int totalCli = totalClientes(matrizClientes);
+                    System.out.println("Total de Clientes: " + totalCli);
+                    break;
+                case 2:
+                    int totalCon = totalContatos(matrizContatos);
+                    System.out.println("Total de Contatos: " + totalCon);
+                    break;
+                case 3:
+                    float media = mediaContatoPorCliente(matrizClientes, matrizContatos);
+                    System.out.println("Media de Contatos por Cliente: " + media);
+                    break;
+                case 4:
+                    int totalSem = totalSemContatos(matrizClientes, matrizContatos);
+                    System.out.println("Total de Clientes sem Contato: " + totalSem);
+                    break;
+                case 0:
+                    break;
+            }
+        }
+    }
 
         
     
@@ -175,7 +219,7 @@ public class principal {
      * Formato: codigo,nome,cpf_cnpj,data_nascimento,sexo,cidade,estado,status
      */
     private static String[][] carregarClientesCSV() {
-        String arquivo = "C:\\Users\\luan.vpcastro\\Documents\\NetBeansProjects\\Main_estudantes\\src\\main_estudantes\\clientes.csv";
+        String arquivo = "C:\\Users\\Bruno\\Documents\\NetBeansProjects\\Projeto_integrador_java\\src\\main_estudantes\\clientes.csv";
         String[][] matrizClientes = new String[0][8];
         int contador = 0;
         
@@ -258,7 +302,7 @@ public class principal {
             System.out.println("Status");
             System.out.println("----------------------------------------------");
             for (int i = 0; i < matrizContatos.length; i++) {
-                System.out.print(i + " | ");
+                //System.out.print(i + " | "); pq isso ta aqui? - Taffarelsons :v
                 System.out.print(matrizContatos[i][0] + " | ");
                 System.out.print(matrizContatos[i][1] + " | ");
                 System.out.print(matrizContatos[i][2] + " | ");
@@ -272,7 +316,7 @@ public class principal {
      * Formato: codigo_contato,codigo_cliente,tipo,valor,status
      */
     private static String[][] carregarContatosCSV() {
-        String arquivo = "C:\\Users\\luan.vpcastro\\Documents\\NetBeansProjects\\Main_estudantes\\src\\main_estudantes\\contatos.csv";
+        String arquivo = "C:\\Users\\Bruno\\Documents\\NetBeansProjects\\Projeto_integrador_java\\src\\main_estudantes\\contatos.csv";
         String[][] matrizContatos = new String[0][5];
         int contador = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
@@ -474,4 +518,71 @@ String [][] novaMatriz = new String [matrizContatos.length + 1] [5];
    
        return matrizNova;
    }
+   
+    /**
+     * RELATORIO - Fica pedindo pra por estas coisas em baixo???? alguem sabe pq?
+     * @param matrizClientes
+     * @return 
+     */
+   
+    public static int totalClientes (String[][] matrizClientes) {
+ 
+        return matrizClientes.length;
+    }
+    public static int totalContatos (String[][] matrizContatos) {
+ 
+        return matrizContatos.length;
+    }
+    public static float mediaContatoPorCliente (String[][] matrizClientes, String[][] matrizContatos) {
+        // se não por pra float ele arredonda o valor (obrigado stack overflow)
+        return (float)totalContatos(matrizContatos) / (float)totalClientes(matrizClientes);
+    }
+    public static int totalSemContatos (String[][] matrizClientes, String[][] matrizContatos) {
+        int totalSemContatos = 0;
+    
+        for (int i = 0; i < matrizClientes.length; i++) {
+            boolean temContato = false;
+            String codigoCliente = matrizClientes[i][0];
+            
+            for (int j = 0; j < matrizContatos.length; j++) {
+                String chaveEstrangeira = matrizContatos[j][1];
+                
+                if(codigoCliente.equals(chaveEstrangeira)) {
+                    temContato = true;
+                    break;
+                }
+            }
+            
+            if(temContato == false) {
+                totalSemContatos++;
+            }
+        }
+        
+        return totalSemContatos;
+    }
+ 
+    
+    /**
+    * ORDENAÇÃO - D; Fica pedindo pra por estas coisas em baixo???? alguem sabe pq?
+     * @param matrizClientes
+    */
+
+    // Ordenando Clientes
+    public static void ordenarClientes (String[][] matrizClientes) {
+        // não funcionando por algum motivo
+        for (int i = 0; i < matrizClientes.length - 1; i++) {
+            for (int j = 0; j < matrizClientes.length - 1 - i; j++) {
+                if (matrizClientes[j][1].compareTo(matrizClientes[j+1][1]) < 0) {
+                    String[] temp = matrizClientes[j];
+                    matrizClientes[j] = matrizClientes[j+1];
+                    matrizClientes[j+1] = temp;
+                }
+            }
+        }
+        
+    }
+    
 }
+
+
+     
