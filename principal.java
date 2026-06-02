@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package main_estudantes;
+package principal;
 
 import java.util.Scanner;
 import java.io.BufferedReader;
@@ -43,8 +43,8 @@ public class principal {
         while (opcao != 0) {
             System.out.println("\n========== MENU PRINCIPAL ==========");
             System.out.println("1 - Carregar dados de teste (CSV)");
-            System.out.println("2 - Grenciar clientes");
-            System.out.println("3 - Grenciar contatos");
+            System.out.println("2 - Gerenciar clientes");
+            System.out.println("3 - Gerenciar contatos");
             System.out.println("4 - Relatorios");
             System.out.println("0 - Sair");
             System.out.println("====================================");
@@ -70,7 +70,7 @@ public class principal {
                         menuClientes(matrizClientes, matrizContatos);
                         break;  
                     case 3 :
-                        menuContatos(matrizContatos);
+                        menuContatos(matrizClientes, matrizContatos);
                         break;
                     case 4: 
                         menuRelatorios(matrizClientes, matrizContatos);
@@ -133,7 +133,7 @@ public class principal {
     }
         
         
-    private static void menuContatos(String [][] matrizContatos){
+    private static void menuContatos(String [][] matrizContatos, String[][] matrizClientes){
             int opcao = -1;
             
             Scanner scanner = new Scanner(System.in);
@@ -153,11 +153,12 @@ public class principal {
             
             switch(opcao) {
                 case 1: 
+                    matrizContatos = incluirContatos(matrizContatos);
                     break;
                 case 2:
                     break;
                 case 3:
-                    listarContatos(matrizContatos);
+                    listarContatos(matrizClientes, matrizContatos);
                     break;
                 case 4:
                     alteracaoContatos(matrizContatos);
@@ -219,7 +220,7 @@ public class principal {
      * Formato: codigo,nome,cpf_cnpj,data_nascimento,sexo,cidade,estado,status
      */
     private static String[][] carregarClientesCSV() {
-        String arquivo = "C:\\Users\\Bruno\\Documents\\NetBeansProjects\\Projeto_integrador_java\\src\\main_estudantes\\clientes.csv";
+        String arquivo = "C:\\Users\\luan.vpcastro\\Documents\\NetBeansProjects\\principal\\src\\principal\\clientes.csv";
         String[][] matrizClientes = new String[0][8];
         int contador = 0;
         
@@ -291,22 +292,41 @@ public class principal {
             }
         }
     }
-    private static void listarContatos(String[][] matrizContatos){
+    private static void listarContatos(String[][] matrizContatos, String[][] matrizClientes){
         if(matrizContatos.length == 0){
             System.out.println("Nenhum cadastro");
         } else {
             System.out.print("CodCont  | ");
             System.out.print("CodCli   | ");
+            System.out.print("Nome   | ");
             System.out.print("Tipo    | ");
             System.out.print("Valor   | ");
             System.out.println("Status");
-            System.out.println("----------------------------------------------");
+            System.out.println("--------------------------------------------------------------");
             for (int i = 0; i < matrizContatos.length; i++) {
+            String nomeCliente = "";
+
+                for (int j = 0; j < matrizClientes.length; j++) {
+                    if (matrizContatos[i][1].equals(matrizClientes[j][0])) {
+                        nomeCliente = matrizClientes[j][1];
+                        break;
+                    }
+                } 
+                
                 //System.out.print(i + " | "); pq isso ta aqui? - Taffarelsons :v
-                System.out.print(matrizContatos[i][0] + " | ");
+                System.out.printf("%s | %s | %s | %s | %s | %s\n",
+                        matrizContatos[i][0],
+                        matrizContatos[i][1],
+                        nomeCliente,
+                        matrizContatos[i][2],
+                        matrizContatos[i][3],
+                        matrizContatos[i][4]
+                        );
+                /*System.out.print(matrizContatos[i][0] + " | ");           
                 System.out.print(matrizContatos[i][1] + " | ");
+                System.out.println(nomeCliente + " | ");
                 System.out.print(matrizContatos[i][2] + " | ");
-                System.out.println(matrizContatos[i][3]);
+                System.out.println(matrizContatos[i][3]);*/
             }
         }
     }   
@@ -316,7 +336,7 @@ public class principal {
      * Formato: codigo_contato,codigo_cliente,tipo,valor,status
      */
     private static String[][] carregarContatosCSV() {
-        String arquivo = "C:\\Users\\Bruno\\Documents\\NetBeansProjects\\Projeto_integrador_java\\src\\main_estudantes\\contatos.csv";
+        String arquivo = "C:\\Users\\luan.vpcastro\\Documents\\NetBeansProjects\\principal\\src\\principal\\contatos.csv";
         String[][] matrizContatos = new String[0][5];
         int contador = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
@@ -442,7 +462,6 @@ String [][] novaMatriz = new String [matrizContatos.length + 1] [5];
            l++;
        }
        
-       
        String cod = String.valueOf(l);
        if(matrizClientes.length == 1){
             matrizClientes[0][0] = cod;
@@ -483,6 +502,50 @@ String [][] novaMatriz = new String [matrizContatos.length + 1] [5];
        }
        return matrizClientes;
     }
+   
+   
+   public static String[][] incluirContatos(String[][] matrizContatos){
+       Scanner leia = new Scanner(System.in);
+      
+       matrizContatos = aumentarMatrizContatos(matrizContatos);
+       int l = 0;
+       
+       for (int i = 0; i < matrizContatos.length; i++) {
+           l++;
+       }
+       
+       String cod = String.valueOf(l);
+       if(matrizContatos.length == 1){
+            matrizContatos[0][0] = cod;
+            
+       }
+       else if (matrizContatos.length > 1){
+           matrizContatos[matrizContatos.length - 1][0] = cod;
+       }
+       
+       for (int i = 0; i < matrizContatos.length; i++) {
+           for (int j = 0; j < matrizContatos[i].length; j++) {
+               if(i + 1 == matrizContatos.length ){
+                   System.out.println("Qual o seu id ?");
+                   String id = leia.nextLine();
+                   matrizContatos[i][1] = id;
+                   System.out.println("Digite o tipo");
+                   String nomeContato = leia.nextLine();
+                   matrizContatos[i][2] = nomeContato;
+                   System.out.println("Digite o tvalor do contato)");
+                   String tipoContato = leia.nextLine();
+                   matrizContatos[i][3] = tipoContato;
+                   System.out.println("Digite o status");
+                   String valor = leia.nextLine();
+                   matrizContatos[i][4] = valor;
+                   
+                   break;
+               }    
+           }
+           
+       }
+       return matrizContatos;
+   }
    
    public static String[][] excluirClientes(String[][] matrizClientes){
        Scanner leia = new Scanner(System.in);
