@@ -1,6 +1,6 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package principal;
 
@@ -14,8 +14,12 @@ import java.io.IOException;
  * @author luan.vpcastro
  */
 public class principal {
-    public static void main(String[] args) {
     
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+
         // Matrizes criadas localmente (não são globais)
         String[][] matrizClientes = new String[0][8];
         String[][] matrizContatos = new String[0][5];
@@ -67,10 +71,14 @@ public class principal {
                         break;
                     
                     case 2 : 
-                        menuClientes(matrizClientes, matrizContatos);
-                        break;  
+                        String[][][] resultadoClientes = menuClientes(matrizClientes, matrizContatos);
+                        matrizClientes = resultadoClientes[0];
+                        matrizContatos = resultadoClientes[1]; 
+                        break;
                     case 3 :
-                        menuContatos(matrizClientes, matrizContatos);
+                        String[][][] resultadoContatos = menuContatos(matrizClientes, matrizContatos);
+                        matrizClientes = resultadoContatos[0];
+                        matrizContatos = resultadoContatos[1];
                         break;
                     case 4: 
                         menuRelatorios(matrizClientes, matrizContatos);
@@ -88,7 +96,7 @@ public class principal {
         scanner.close();
     }
     
-    private static void menuClientes(String[][] matrizClientes, String[][] matrizContatos) {
+    private static String[][][] menuClientes(String[][] matrizClientes, String[][] matrizContatos) {
         int opcao = -1;
         Scanner scanner = new Scanner(System.in);
         
@@ -119,7 +127,9 @@ public class principal {
                     matrizClientes = alteraçãoClientes(matrizClientes);
                     break;
                 case 5:
-                    matrizClientes = excluirClientes(matrizClientes);
+                    String[][][] matrizAtualizada =excluirClientes(matrizClientes, matrizContatos);
+                    matrizClientes = matrizAtualizada[0];
+                    matrizContatos = matrizAtualizada[1];
                     break;
                 case 6:
                     ordenarClientes(matrizClientes);
@@ -130,10 +140,11 @@ public class principal {
             }
             
         }
+        return new String[][][]{matrizClientes, matrizContatos};
     }
         
         
-    private static void menuContatos(String [][] matrizContatos, String[][] matrizClientes){
+    private static String[][][] menuContatos(String[][] matrizClientes, String[][] matrizContatos){
             int opcao = -1;
             
             Scanner scanner = new Scanner(System.in);
@@ -158,7 +169,7 @@ public class principal {
                 case 2:
                     break;
                 case 3:
-                    listarContatos(matrizClientes, matrizContatos);
+                    listarContatos(matrizContatos, matrizClientes);
                     break;
                 case 4:
                     alteracaoContatos(matrizContatos);
@@ -170,6 +181,7 @@ public class principal {
                 default :
             }
             }
+            return new String[][][]{matrizClientes, matrizContatos};
         }
     
     public static void menuRelatorios (String[][] matrizClientes, String[][] matrizContatos) {
@@ -272,49 +284,50 @@ public class principal {
             System.out.println("Nenhum cadastro");
         } else {
             System.out.print("Codigo  | ");
-            System.out.print("Nome    | ");
-            System.out.print("CPF/CNPJ   | ");
-            System.out.print("Data_Nascimento    | ");
-            System.out.print("Sexo    | ");
-            System.out.print("Cidade  | ");
+            System.out.print("Nome                 | ");
+            System.out.print("CPF/CNPJ        | ");
+            System.out.print("Data_Nascimento  | ");
+            System.out.print("Sexo   | ");
+            System.out.print("Cidade              | ");
             System.out.print("Estado  | ");
             System.out.println("Status");
             System.out.println("----------------------------------------------");
             for (int i = 0; i < matrizClientes.length; i++) {
-                System.out.print(" | ");
-                System.out.print(matrizClientes[i][0] + " | ");
-                System.out.print(matrizClientes[i][1] + " | ");
-                System.out.print(matrizClientes[i][2] + " | ");
-                System.out.print(matrizClientes[i][3] + " | ");
-                System.out.print(matrizClientes[i][4] + " | ");
-                System.out.print(matrizClientes[i][5] + " | ");
-                System.out.println(matrizClientes[i][6]);
+                System.out.printf(
+                "%-7s | %-20s | %-15s | %-15s | %-5s | %-20s | %-5s | %-10s%n",
+                matrizClientes[i][0],
+                matrizClientes[i][1],
+                matrizClientes[i][2],
+                matrizClientes[i][3],
+                matrizClientes[i][4],
+                matrizClientes[i][5],
+                matrizClientes[i][6],
+                matrizClientes[i][7]
+                );
             }
         }
     }
-    private static void listarContatos(String[][] matrizContatos, String[][] matrizClientes){
+        private static void listarContatos(String[][] matrizContatos, String[][] matrizClientes){
         if(matrizContatos.length == 0){
             System.out.println("Nenhum cadastro");
         } else {
             System.out.print("CodCont  | ");
             System.out.print("CodCli   | ");
-            System.out.print("Nome   | ");
-            System.out.print("Tipo    | ");
-            System.out.print("Valor   | ");
+            System.out.print("Nome                 | ");
+            System.out.print("Tipo       | ");
+            System.out.print("Valor                     | ");
             System.out.println("Status");
-            System.out.println("--------------------------------------------------------------");
+            System.out.println("------------------------------------------------------------------------------------");
             for (int i = 0; i < matrizContatos.length; i++) {
             String nomeCliente = "";
-
+ 
                 for (int j = 0; j < matrizClientes.length; j++) {
                     if (matrizContatos[i][1].equals(matrizClientes[j][0])) {
                         nomeCliente = matrizClientes[j][1];
                         break;
                     }
                 } 
-                
-                //System.out.print(i + " | "); pq isso ta aqui? - Taffarelsons :v
-                System.out.printf("%s | %s | %s | %s | %s | %s\n",
+                System.out.printf("%-8s | %-8s | %-20s | %-10s | %-25s | %-10s\n",
                         matrizContatos[i][0],
                         matrizContatos[i][1],
                         nomeCliente,
@@ -322,11 +335,6 @@ public class principal {
                         matrizContatos[i][3],
                         matrizContatos[i][4]
                         );
-                /*System.out.print(matrizContatos[i][0] + " | ");           
-                System.out.print(matrizContatos[i][1] + " | ");
-                System.out.println(nomeCliente + " | ");
-                System.out.print(matrizContatos[i][2] + " | ");
-                System.out.println(matrizContatos[i][3]);*/
             }
         }
     }   
@@ -547,40 +555,61 @@ String [][] novaMatriz = new String [matrizContatos.length + 1] [5];
        return matrizContatos;
    }
    
-   public static String[][] excluirClientes(String[][] matrizClientes){
+   public static String[][][] excluirClientes(String[][] matrizClientes, String[][] matrizContatos){
        Scanner leia = new Scanner(System.in);
-       System.out.println("Qual cliente deseja alterar");
+       System.out.println("Qual cliente deseja excluir");
+       String[][][] retorno = new String [2][][];
        String codCliente = leia.nextLine();
        
-       String[][] matriz = new String[matrizClientes.length][8];
+       String [][] matrizNova = new String [matrizClientes.length - 1][8];
+       int linha = 0;
+       
+       
        for (int i = 0; i < matrizClientes.length; i++) {
+           int coluna = 0;
+           if(!codCliente.equals(matrizClientes[i][0])){
            for (int j = 0; j < matrizClientes[i].length; j++) {
-               if(codCliente.equals(matrizClientes[i][j]))
-               {
-                   matriz[matriz.length - 1][j] = matrizClientes[i][j];
-               }
-               else{
-                   matriz[i][j]= matrizClientes[i][j];
-               }
+                   matrizNova[linha][coluna] = matrizClientes[i][j];
+                   coluna++;
            }
-       }
-       
-       
-       
-       String[][] matrizNova = new String [matriz.length - 1][8];
-       
-       for (int i = 0; i < matrizNova.length; i++) {
-           for (int j = 0; j < matrizNova[i].length; j++) {
-               matrizNova[i][j] = matriz[i][j];
+         
+           linha++;
+       } else {
+               
            }
+       
        }
+       retorno[0] = matrizNova; 
+       
+       retorno[1] = exluirContatoCliente(matrizClientes, matrizContatos, codCliente);
        
        
        
        
-   
-       return matrizNova;
+       return retorno;
    }
+   
+ public static String[][] exluirContatoCliente(String[][] matrizClientes, String[][] matrizContatos, String codCliente){
+    int contador = 0;
+    for (int i = 0; i < matrizContatos.length; i++) {
+        if(codCliente.equals(matrizContatos[i][1])){
+            contador++;
+        }
+    }
+
+    String[][] contatosNovos = new String[matrizContatos.length - contador][5];
+    int linha = 0;
+    for (int i = 0; i < matrizContatos.length; i++) {
+        if(!codCliente.equals(matrizContatos[i][1])){
+            for (int j = 0; j < matrizContatos[i].length; j++) {
+                contatosNovos[linha][j] = matrizContatos[i][j];
+            }
+            linha++;
+        }
+    }
+
+    return contatosNovos;
+}
    
     /**
      * RELATORIO - Fica pedindo pra por estas coisas em baixo???? alguem sabe pq?
@@ -647,5 +676,3 @@ String [][] novaMatriz = new String [matrizContatos.length + 1] [5];
     
 }
 
-
-     
