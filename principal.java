@@ -2,24 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package Projeto_integrador_java;
+package principal;
 
+import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
 
 /**
  *
- * @author luan.vpcastro
+ * @author Kauan
  */
 public class principal {
-    
+
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
+     
         // Matrizes criadas localmente (não são globais)
         String[][] matrizClientes = new String[0][8];
         String[][] matrizContatos = new String[0][5];
@@ -108,10 +108,12 @@ public class principal {
             System.out.println("4 - alterar cliente");
             System.out.println("5 - Apagar clientes");
             System.out.println("6 - Ordenar por nome");
+            System.out.println("7 - Pesquisar por nome");
             System.out.println("0 - Voltar");
             System.out.println("====================================");
             System.out.print("Escolha uma opção: ");
-            opcao = scanner.nextInt();        
+            opcao = scanner.nextInt(); 
+            
             
             switch(opcao) {
                 case 1: 
@@ -129,10 +131,13 @@ public class principal {
                 case 5:
                     String[][][] matrizAtualizada =excluirClientes(matrizClientes, matrizContatos);
                     matrizClientes = matrizAtualizada[0];
-                    matrizContatos = matrizAtualizada[1];
+                    matrizContatos = maSSSStrizAtualizada[1];
                     break;
                 case 6:
                     ordenarClientes(matrizClientes);
+                    break;
+                case 7:
+                    pesquisarClientePorNome(matrizClientes);
                     break;
                 case 0:
                     break;
@@ -153,10 +158,10 @@ public class principal {
                 System.out.println("\n========== MENU CONTATOS ==========");
             System.out.println("1 - Incluir contato");
             System.out.println("2 - Listar contato de um cliente");
-            System.out.println("3 - Listar contatos (de todos os clientes)");
+            System.out.println("3 - Listar contatos (de todos os clientes");
             System.out.println("4 - alterar contato");
             System.out.println("5 - Apagar contato");
-            System.out.println("0 - Voltar");
+            System.out.println("0 - votlar");
             System.out.println("====================================");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -176,7 +181,7 @@ public class principal {
                     alteracaoContatos(matrizContatos);
                     break;
                 case 5:
-                    
+                    matrizContatos = excluirContatos(matrizContatos);
                     break;
                 case 0:
                     break;
@@ -234,7 +239,7 @@ public class principal {
      * Formato: codigo,nome,cpf_cnpj,data_nascimento,sexo,cidade,estado,status
      */
     private static String[][] carregarClientesCSV() {
-        String arquivo = "C:\\Users\\Bruno\\Documents\\NetBeansProjects\\Projeto_integrador_java\\src\\Projeto_integrador_java\\clientes.csv";
+        String arquivo = "C:\\Users\\Kauan\\OneDrive\\Documentos\\NetBeansProjects\\principal\\src\\principal\\clientes.csv";
         String[][] matrizClientes = new String[0][8];
         int contador = 0;
         
@@ -346,7 +351,7 @@ public class principal {
      * Formato: codigo_contato,codigo_cliente,tipo,valor,status
      */
     private static String[][] carregarContatosCSV() {
-        String arquivo = "C:\\Users\\Bruno\\Documents\\NetBeansProjects\\Projeto_integrador_java\\src\\Projeto_integrador_java\\contatos.csv";
+        String arquivo = "C:\\Users\\Kauan\\OneDrive\\Documentos\\NetBeansProjects\\principal\\src\\principal\\contatos.csv";
         String[][] matrizContatos = new String[0][5];
         int contador = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
@@ -612,6 +617,30 @@ String [][] novaMatriz = new String [matrizContatos.length + 1] [5];
 
     return contatosNovos;
 }
+ 
+ public static String[][] excluirContatos(String[][] matrizContatos){
+       Scanner leia = new Scanner(System.in);
+       System.out.println("Qual contato deseja excluir");
+       String codContato = leia.nextLine();
+       
+       String [][] matrizNova = new String [matrizContatos.length - 1][5];
+       int linha = 0;
+       
+       
+       for (int i = 0; i < matrizContatos.length; i++) {
+           int coluna = 0;
+           if(!codContato.equals(matrizContatos[i][0])){
+           for (int j = 0; j < matrizContatos[i].length; j++) {
+                   matrizNova[linha][coluna] = matrizContatos[i][j];
+                   coluna++;
+           }
+         
+           linha++;
+       } 
+       }
+       return matrizNova;
+     
+ }
    
     /**
      * RELATORIO - Fica pedindo pra por estas coisas em baixo???? alguem sabe pq?
@@ -656,13 +685,13 @@ String [][] novaMatriz = new String [matrizContatos.length + 1] [5];
     }
  
     
-      /**
+    /**
     * ORDENAÇÃO - D; Fica pedindo pra por estas coisas em baixo???? alguem sabe pq?
      * @param matrizClientes
     */
- 
+
     // Ordenando Clientes
-    public static void ordenarClientes(String[][] matrizClientes) {
+     public static void ordenarClientes(String[][] matrizClientes) {
         for (int i = 0; i < matrizClientes.length - 1; i++) {
             for (int j = 0; j < matrizClientes.length - 1 - i; j++) {
  
@@ -756,5 +785,37 @@ String [][] novaMatriz = new String [matrizContatos.length + 1] [5];
             }
         }
     }
+    
+    public static String[][] pesquisarClientePorNome(String[][] matrizCliente){
+        Scanner leia = new Scanner(System.in);
+        System.out.println("Digite o nome que deseja saber");
+        String pesquisa = leia.nextLine();
+        String maiuscula = pesquisa.toUpperCase();
+        int nomesIguais = 0;
+        for (int i = 0; i < matrizCliente.length; i++) {
+            String nome = matrizCliente[i][1].toUpperCase();
+            if (nome.contains(maiuscula)){
+                nomesIguais++;
+            }
+        }
+        String[][] nomesResultado = new String[nomesIguais][8];
+        int linha = 0;
+        for (int i = 0; i < matrizCliente.length; i++) {
+            String nome = matrizCliente[i][1].toUpperCase();
+            if(nome.contains(maiuscula)){
+                for (int j = 0; j < 8; j++) {
+                    nomesResultado[linha][j] = matrizCliente[i][j];
+                }
+                linha++;
+            }
+        }
+        if (nomesIguais == 0){
+            System.out.println("Nenhum cliente com o nome " + pesquisa);
+        } else {
+            System.out.println(nomesIguais + " clientes foram encontrados");
+            listarClientes(nomesResultado);
+        }
+        return nomesResultado;
+    }
+    
 }
-
