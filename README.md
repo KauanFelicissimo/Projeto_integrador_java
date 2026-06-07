@@ -19,3 +19,9 @@ Foi primeiramente criado duas variaveis string para que elas obtessem o nome enc
 -- CONSULTA --
 
 A consulta de clientes por codigo e contatos por cliente é simples, basta de um scanner que pega o valor do codigo do cliente, compara ao codigo do cliente nas duas matrizes, checa os espaços onde o numero bate e imprime o cliente (utilizando a mesma base do listar para a impressão) tudo isto dentro de apenas um for que corre pelo tamanho de linhas da matriz.
+
+-- INCLUIR -- 
+Primerio usamos a função AumentarMatrizClientes para aumentar a matriz em +1 para que o cliente podesse ser incluído.
+Definimos uma variável para que pudesse percorrer a matriz e encontrar qual fosse a última linha e então recebesse o código novo. E com isso foi necessário transformar a variável de int para String usando String.valueOf
+Se a linha for igual a 1, o código vai ser 1 e acabou. Agora se for maior, a última linha irá receber o maior código agora.
+Agora foi preciso criar um For para que o usuário percorresse as colunas dessa nova linha para preencher os dados do novo cliente ou contato.
