@@ -2,12 +2,12 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package principal;
+package Projeto_integrador_java;
 
-import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Scanner;
 
 /**
  *
@@ -111,8 +111,7 @@ public class principal {
             System.out.println("0 - Voltar");
             System.out.println("====================================");
             System.out.print("Escolha uma opção: ");
-            opcao = scanner.nextInt(); 
-            
+            opcao = scanner.nextInt();        
             
             switch(opcao) {
                 case 1: 
@@ -122,6 +121,7 @@ public class principal {
                     listarClientes(matrizClientes);
                     break;
                 case 3:
+                    consultaClienteCodigo(matrizClientes);
                     break;
                 case 4:
                     matrizClientes = alteraçãoClientes(matrizClientes);
@@ -153,10 +153,10 @@ public class principal {
                 System.out.println("\n========== MENU CONTATOS ==========");
             System.out.println("1 - Incluir contato");
             System.out.println("2 - Listar contato de um cliente");
-            System.out.println("3 - Listar contatos (de todos os clientes");
+            System.out.println("3 - Listar contatos (de todos os clientes)");
             System.out.println("4 - alterar contato");
             System.out.println("5 - Apagar contato");
-            System.out.println("0 - votlar");
+            System.out.println("0 - Voltar");
             System.out.println("====================================");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -167,6 +167,7 @@ public class principal {
                     matrizContatos = incluirContatos(matrizContatos);
                     break;
                 case 2:
+                    consultaContatoCliente(matrizContatos, matrizClientes);
                     break;
                 case 3:
                     listarContatos(matrizContatos, matrizClientes);
@@ -175,6 +176,7 @@ public class principal {
                     alteracaoContatos(matrizContatos);
                     break;
                 case 5:
+                    
                     break;
                 case 0:
                     break;
@@ -232,7 +234,7 @@ public class principal {
      * Formato: codigo,nome,cpf_cnpj,data_nascimento,sexo,cidade,estado,status
      */
     private static String[][] carregarClientesCSV() {
-        String arquivo = "C:\\Users\\luan.vpcastro\\Documents\\NetBeansProjects\\principal\\src\\principal\\clientes.csv";
+        String arquivo = "C:\\Users\\Bruno\\Documents\\NetBeansProjects\\Projeto_integrador_java\\src\\Projeto_integrador_java\\clientes.csv";
         String[][] matrizClientes = new String[0][8];
         int contador = 0;
         
@@ -344,7 +346,7 @@ public class principal {
      * Formato: codigo_contato,codigo_cliente,tipo,valor,status
      */
     private static String[][] carregarContatosCSV() {
-        String arquivo = "C:\\Users\\luan.vpcastro\\Documents\\NetBeansProjects\\principal\\src\\principal\\contatos.csv";
+        String arquivo = "C:\\Users\\Bruno\\Documents\\NetBeansProjects\\Projeto_integrador_java\\src\\Projeto_integrador_java\\contatos.csv";
         String[][] matrizContatos = new String[0][5];
         int contador = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
@@ -654,25 +656,105 @@ String [][] novaMatriz = new String [matrizContatos.length + 1] [5];
     }
  
     
-    /**
+      /**
     * ORDENAÇÃO - D; Fica pedindo pra por estas coisas em baixo???? alguem sabe pq?
      * @param matrizClientes
     */
-
+ 
     // Ordenando Clientes
-    public static void ordenarClientes (String[][] matrizClientes) {
-        // não funcionando por algum motivo
+    public static void ordenarClientes(String[][] matrizClientes) {
         for (int i = 0; i < matrizClientes.length - 1; i++) {
             for (int j = 0; j < matrizClientes.length - 1 - i; j++) {
-                if (matrizClientes[j][1].compareTo(matrizClientes[j+1][1]) < 0) {
+ 
+                String nome1 = matrizClientes[j][1];
+                String nome2 = matrizClientes[j + 1][1];
+ 
+                // Precisa de Math.min para não dar erro de "index out of bounds"
+                int menorTamanho = Math.min(nome1.length(), nome2.length());
+                boolean mudou = false;
+ 
+                for (int k = 0; k < menorTamanho; k++) {
+                    char c1 = nome1.charAt(k);
+                    char c2 = nome2.charAt(k);
+ 
+                    if (c1 > c2) {
+                        // Nome1 é maior (vem depois), precisa trocar a LINHA INTEIRA
+                        String[] temp = matrizClientes[j];
+                        matrizClientes[j] = matrizClientes[j + 1];
+                        matrizClientes[j + 1] = temp;
+                        mudou = true;
+                        break; // Já decidiu a ordem, sai do laço das letras
+                    } else if (c1 < c2) {
+                        // Nome1 é menor (já está na ordem certa), não faz nada e sai
+                        mudou = true; 
+                        break;
+                    }
+                    // Se c1 == c2, o laço continua para a próxima letra
+                }
+ 
+                // Se todos os caracteres forem iguais até o limite do menor nome o menor ("Ana") deve vir antes.
+                if (!mudou && nome1.length() > nome2.length()) {
                     String[] temp = matrizClientes[j];
-                    matrizClientes[j] = matrizClientes[j+1];
-                    matrizClientes[j+1] = temp;
+                    matrizClientes[j] = matrizClientes[j + 1];
+                    matrizClientes[j + 1] = temp;
                 }
             }
         }
-        
+        System.out.println("Lista ordenada com sucesso! ");
     }
+    /**
+     * - Consulta de Contatos - Clientes
+     * 
+     * @param matrizClientes
+     */
+    public static void consultaClienteCodigo(String[][] matrizClientes) {
+        Scanner input = new Scanner (System.in);
+        String codigoCli;
+        System.out.printf("Insira o codigo do cliente: ");
+        codigoCli = input.next();
+        System.out.printf("| ");
+        for (int i = 0; i < matrizClientes.length; i++) {
+            if (matrizClientes[i][0].equals(codigoCli)) {
+                    System.out.printf(
+                "%-7s | %-20s | %-15s | %-15s | %-5s | %-20s | %-5s | %-10s%n",
+                matrizClientes[i][0],
+                matrizClientes[i][1],
+                matrizClientes[i][2],
+                matrizClientes[i][3],
+                matrizClientes[i][4],
+                matrizClientes[i][5],
+                matrizClientes[i][6],
+                matrizClientes[i][7]
+                );
+            }
+        }
+    } 
     
+    public static void consultaContatoCliente(String[][] matrizContatos, String[][] matrizClientes) {
+        Scanner input = new Scanner (System.in);
+        String consulta;
+        System.out.println("Insira a seguir o codigo do cliente: ");
+        consulta = input.next();
+        for (int i = 0; i < matrizContatos.length; i++) {
+            String nomeCliente = "";
+ 
+                for (int j = 0; j < matrizClientes.length; j++) {
+                    if (matrizContatos[i][1].equals(matrizClientes[j][0])) {
+                        nomeCliente = matrizClientes[j][1];
+                        break;
+                    }
+                }
+            if (matrizContatos[i][1].equals(consulta)) {
+                System.out.printf("%-8s | %-8s | %-20s | %-10s | %-25s | %-10s\n",
+                        matrizContatos[i][0],
+                        matrizContatos[i][1],
+                        nomeCliente,
+                        matrizContatos[i][2],
+                        matrizContatos[i][3],
+                        matrizContatos[i][4]
+                        );
+            }
+        }
+    }
 }
 

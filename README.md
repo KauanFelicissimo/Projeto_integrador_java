@@ -13,4 +13,9 @@ Já o total sem contatos se trata de dois for-loops um dentro do outro que varre
 
 -- ORDENAÇÃO --
 
-NÃO TENHO A MINIMA IDEA DO POR QUE O BUBBLE SORT NÃO VAI ;(
+Para a ordenação de clientes: 
+Foi primeiramente criado duas variaveis string para que elas obtessem o nome encontrado na coluna 1 da matriz, foi necessario utilizar math.min para que não ocorresse erro de out of bounds, utilizando charAt transforma-se o nome em caracteres para a comparação, comparação esta que ocorre dentro de um for do que corre pelo tamanho minimo do nome do cliente, logo apos isso é feito um bubble sort simples junto a uma variavel booleana que checa se o nome trocou de lugar, ele tambem checa se o nome ja é "menor" que o outro pulando para fora.
+
+-- CONSULTA --
+
+A consulta de clientes por codigo e contatos por cliente é simples, basta de um scanner que pega o valor do codigo do cliente, compara ao codigo do cliente nas duas matrizes, checa os espaços onde o numero bate e imprime o cliente (utilizando a mesma base do listar para a impressão) tudo isto dentro de apenas um for que corre pelo tamanho de linhas da matriz.
