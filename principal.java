@@ -109,6 +109,7 @@ public class principal {
             System.out.println("5 - Apagar clientes");
             System.out.println("6 - Ordenar por nome");
             System.out.println("7 - Pesquisar por nome");
+            System.out.println("8 - Menu alterar Status");
             System.out.println("0 - Voltar");
             System.out.println("====================================");
             System.out.print("Escolha uma opção: ");
@@ -138,6 +139,9 @@ public class principal {
                     break;
                 case 7:
                     pesquisarClientePorNome(matrizClientes);
+                    break;
+                case 8:
+                    menuStatusClientes (matrizClientes);
                     break;
                 case 0:
                     break;
@@ -817,5 +821,75 @@ String [][] novaMatriz = new String [matrizContatos.length + 1] [5];
         }
         return nomesResultado;
     }
+
+    // =================== ATIVAR OU INATIVAR CLIENTES ======================
+ 
+    private static String[][][] menuStatusClientes(String[][] matrizClientes) {
+        int opcao = -1;
+        Scanner scanner = new Scanner(System.in);
+        while (opcao != 0) {
+            System.out.println("\n========== MENU STATUS DO CLIENTE ==========");
+            System.out.println("1 - ATIVAR cliente");
+            System.out.println("2 - INATIVAR cliente");
+            System.out.println("3 - Listar clientes");
+            System.out.println("0 - Voltar");
+            System.out.println("====================================");
+            System.out.print("Escolha uma opção: ");
+            opcao = scanner.nextInt(); 
+
+            switch(opcao) {
+                case 1:
+                    ativarClientes(matrizClientes);
+                    break;
+                case 2:
+                    inativarClientes(matrizClientes);
+                case 3:
+                    listarClientes(matrizClientes);
+                case 0:
+                    break;
+                default :
+            }
+        }
+        return new String[][][]{matrizClientes};
+    }
+    private static String [][] ativarClientes(String[][] matrizClientes){
+        Scanner scanner = new Scanner(System.in);
+        int contador = 0;
+        System.out.println("Digite o codigo do cliente que dejesa inativar:");
+        String codCliente = scanner.nextLine();
+        for(int i = 0; i < matrizClientes.length; i ++){
+            if(codCliente.equals(matrizClientes[contador][0])){
+                for (int j = 0; j < matrizClientes[contador].length; j++) {
+                    int colunaStatus = matrizClientes[contador].length - 1;
+                    matrizClientes[contador][colunaStatus] = "ATIVO";      
+                }
+                System.out.println("Status atualizado com sucesso!");
+                break;
+            }else{
+                contador++;
+            }
+        }
+        return matrizClientes;
+    }
+    private static String [][] inativarClientes(String[][] matrizClientes){
+        Scanner scanner = new Scanner(System.in);
+        int contador = 0;
+        System.out.println("Digite o codigo do cliente que dejesa inativar:");
+        String codCliente = scanner.nextLine();
+        for(int i = 0; i < matrizClientes.length; i ++){
+            if(codCliente.equals(matrizClientes[contador][0])){
+                for (int j = 0; j < matrizClientes[contador].length; j++) {
+                    int colunaStatus = matrizClientes[contador].length - 1;
+                    matrizClientes[contador][colunaStatus] = "INATIVO";       
+                }
+                System.out.println("Status atualizado com sucesso!");
+                break;
+            }else{
+                contador++;
+            }
+        }
+        return matrizClientes;
+    }
+    //========================================================================
     
 }
