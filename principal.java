@@ -1,8 +1,8 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package principal;
+package Main_estudantes;
 
 import java.util.Scanner;
 import java.io.BufferedReader;
@@ -11,16 +11,11 @@ import java.io.IOException;
 
 /**
  *
- * @author Kauan
+ * @author kauan.sfelicissimo
  */
 public class principal {
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-     
-        // Matrizes criadas localmente (não são globais)
+    // Matrizes criadas localmente (não são globais)
         String[][] matrizClientes = new String[0][8];
         String[][] matrizContatos = new String[0][5];
         
@@ -132,7 +127,7 @@ public class principal {
                 case 5:
                     String[][][] matrizAtualizada =excluirClientes(matrizClientes, matrizContatos);
                     matrizClientes = matrizAtualizada[0];
-                    matrizContatos = maSSSStrizAtualizada[1];
+                    matrizContatos = matrizAtualizada[1];
                     break;
                 case 6:
                     ordenarClientes(matrizClientes);
@@ -162,10 +157,10 @@ public class principal {
                 System.out.println("\n========== MENU CONTATOS ==========");
             System.out.println("1 - Incluir contato");
             System.out.println("2 - Listar contato de um cliente");
-            System.out.println("3 - Listar contatos (de todos os clientes");
+            System.out.println("3 - Listar contatos (de todos os clientes)");
             System.out.println("4 - alterar contato");
             System.out.println("5 - Apagar contato");
-            System.out.println("0 - votlar");
+            System.out.println("0 - voltar");
             System.out.println("====================================");
             System.out.print("Escolha uma opção: ");
             opcao = scanner.nextInt();
@@ -173,7 +168,7 @@ public class principal {
             
             switch(opcao) {
                 case 1: 
-                    matrizContatos = incluirContatos(matrizContatos);
+                    matrizContatos = incluirContatos(matrizContatos,matrizClientes);
                     break;
                 case 2:
                     consultaContatoCliente(matrizContatos, matrizClientes);
@@ -243,7 +238,7 @@ public class principal {
      * Formato: codigo,nome,cpf_cnpj,data_nascimento,sexo,cidade,estado,status
      */
     private static String[][] carregarClientesCSV() {
-        String arquivo = "C:\\Users\\Kauan\\OneDrive\\Documentos\\NetBeansProjects\\principal\\src\\principal\\clientes.csv";
+        String arquivo = "C:\\Users\\kauan.sfelicissimo\\Documents\\NetBeansProjects\\JavaApplication1\\src\\Main_estudantes\\clientes.csv";
         String[][] matrizClientes = new String[0][8];
         int contador = 0;
         
@@ -355,7 +350,7 @@ public class principal {
      * Formato: codigo_contato,codigo_cliente,tipo,valor,status
      */
     private static String[][] carregarContatosCSV() {
-        String arquivo = "C:\\Users\\Kauan\\OneDrive\\Documentos\\NetBeansProjects\\principal\\src\\principal\\contatos.csv";
+        String arquivo = "C:\\Users\\kauan.sfelicissimo\\Documents\\NetBeansProjects\\JavaApplication1\\src\\Main_estudantes\\contatos.csv";
         String[][] matrizContatos = new String[0][5];
         int contador = 0;
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
@@ -435,17 +430,15 @@ String [][] novaMatriz = new String [matrizContatos.length + 1] [5];
         String codCliente = scanner.nextLine();    
         
         for(int i = 0; i < matrizClientes.length; i ++){
-        if(codCliente.equals(matrizClientes[contador][0])){           
-           for (int j = 1; j < matrizClientes[contador].length; j++) {
+        if(codCliente.equals(matrizClientes[i][0])){           
+           for (int j = 1; j < matrizClientes[i].length; j++) {
                 System.out.println("Altere os dados do cliente indice[" + j + "]");
                 String dadosNovos = scanner.nextLine();
-                matrizClientes[contador][j] = dadosNovos;
+                matrizClientes[i][j] = dadosNovos;
             }
            break;
             
-        } else{
-            contador++;
-        }
+        } 
         }
         return matrizClientes;
     }
@@ -523,10 +516,15 @@ String [][] novaMatriz = new String [matrizContatos.length + 1] [5];
     }
    
    
-   public static String[][] incluirContatos(String[][] matrizContatos){
+   public static String[][] incluirContatos(String[][] matrizContatos , String[][] matrizClientes){
        Scanner leia = new Scanner(System.in);
-      
-       matrizContatos = aumentarMatrizContatos(matrizContatos);
+       System.out.println("Qual o seu id ?");
+       String id = leia.nextLine(); 
+       
+       for (int z = 0; z < matrizClientes.length; z++) {
+       if(matrizClientes[z][0].equals(id)){
+           
+           matrizContatos = aumentarMatrizContatos(matrizContatos);
        int l = 0;
        
        for (int i = 0; i < matrizContatos.length; i++) {
@@ -540,13 +538,11 @@ String [][] novaMatriz = new String [matrizContatos.length + 1] [5];
        }
        else if (matrizContatos.length > 1){
            matrizContatos[matrizContatos.length - 1][0] = cod;
-       }
-       
+       }    
        for (int i = 0; i < matrizContatos.length; i++) {
            for (int j = 0; j < matrizContatos[i].length; j++) {
                if(i + 1 == matrizContatos.length ){
-                   System.out.println("Qual o seu id ?");
-                   String id = leia.nextLine();
+                   
                    matrizContatos[i][1] = id;
                    System.out.println("Digite o tipo");
                    String nomeContato = leia.nextLine();
@@ -560,8 +556,10 @@ String [][] novaMatriz = new String [matrizContatos.length + 1] [5];
                    
                    break;
                }    
-           }
-           
+           }               
+       
+       }
+       }
        }
        return matrizContatos;
    }
