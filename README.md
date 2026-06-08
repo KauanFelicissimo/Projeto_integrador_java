@@ -1,6 +1,14 @@
 ---- PROJETO INTEGRADOR ----
 
-Colocar aqui o que foi feito :P
+-- BASE DO PROJETO --
+
+Utilizamos o esqueleto nos providenciado pelo professor, este esqueleto continha arquivos CSV com clientes e contatos, alem de um menu principal simples que nos utilizamos de base para criar cada menu subseção do projeto, menu este que é apenas utilizado para chamar as outras funções do projeto! Certificamos para que o main fique limpo de lógica e apenas fosse utilizado para começar e terminar o programa.
+
+-- MATRIZES --
+
+São duas matrizes simples de clientes e contatos com oito e cinco colunas respectivamente cada uma, os arquivos CSV povoam elas com informação e, como requisitado pelo professor, podem ser incluidos clientes e contatos novos, alem de poderem ser apagados e alterados.
+
+-- AUMENTAR MATRIZ --
 
 -- RELATORIOS -- 
 
@@ -16,7 +24,15 @@ Já o total sem contatos se trata de dois for-loops um dentro do outro que varre
 Para a ordenação de clientes: 
 Foi primeiramente criado duas variaveis string para que elas obtessem o nome encontrado na coluna 1 da matriz, foi necessario utilizar math.min para que não ocorresse erro de out of bounds, utilizando charAt transforma-se o nome em caracteres para a comparação, comparação esta que ocorre dentro de um for do que corre pelo tamanho minimo do nome do cliente, logo apos isso é feito um bubble sort simples junto a uma variavel booleana que checa se o nome trocou de lugar, ele tambem checa se o nome ja é "menor" que o outro pulando para fora.
 
--- CONSULTA --
+-- MENUS --
+
+Se tratam nada alem de um switch que de acordo com a opção inserido pelo usuario no cursor, ira para a função de acordo com o numero desta opção. Foi necessario transformar os menus em matrizes tridimensionais com retorno para que as mudanças feitas na matriz clientes/contatos se mantivessem apos sair dos menus.
+
+-- LISTAGEM DE MATRIZES --
+
+A listagem de clientes e contatos é simples, apenas um for que trata das linhas da matriz,  e por saber-mos exatamente o tanto de colunas, utilizando o printf e %-(valor)f para melhor controle de tabulação das colunas, certificando-se que as duas matrizes sejam listadas de modo que não estejam amontoadas.
+
+-- CONSULTA POR CODIGO -- 
 
 A consulta de clientes por codigo e contatos por cliente é simples, basta de um scanner que pega o valor do codigo do cliente, compara ao codigo do cliente nas duas matrizes, checa os espaços onde o numero bate e imprime o cliente (utilizando a mesma base do listar para a impressão) tudo isto dentro de apenas um for que corre pelo tamanho de linhas da matriz.
 
@@ -27,6 +43,8 @@ Definimos uma variável para que pudesse percorrer a matriz e encontrar qual fos
 Se a linha for igual a 1, o código vai ser 1 e acabou. Agora se for maior, a última linha irá receber o maior código agora.
 Agora foi preciso criar um For para que o usuário percorresse as colunas dessa nova linha para preencher os dados do novo cliente ou contato.
 
+-- EXCLUIR --
+
 -- PESQUISAR POR NOME --
 
 O programa começa com o usuário digitando qual o nome que o usuário quer pesquisar.
@@ -34,3 +52,7 @@ Foi necessário converter o que o usuário digitou para caixa alta, pois assim t
 Usando um For para percorrer a matriz, o programa irá identificar quantos caracteres iguais há na matriz e então armazenar o total deste valor numa variável.
 Com base neste valor, foi preciso criar outra matriz somente para armazenar os nomes e os valores que os nomes possuem. Como estado, sexo, cidade e outras coisas.
 Usando laço For e usando mais um contador, ele vai pegar a primeira linha, comparar os valores da matriz Clientes, e então armazerar os mesmos valores nessa nova matriz com o nome que foi pesquisado.
+
+-- STATUS -- 
+
+O cliente/contato pode vir tanto dos arquivos CSV quanto incluido com status ATIVO/INATIVO, como extra foi requisitado que nós criassemos um modo de ativar/inativar clientes ao inves de só ficar deletando todo mundo, a função é bem simples e se trata apenas de perguntar (scanner) qual o codigo do cliente que você deseja que seja ativado/desativado, este codigo sera guardado em uma variavel e depois com o uso de um for sera procurado dentro da tabela o codigo do cliente e logo apos sera inserido na coluna de status do cliente o status novo (ATIVO OU INATIVO). Para melhor interface de usuario tambem criamos um menu proprio para a alteração de status.
