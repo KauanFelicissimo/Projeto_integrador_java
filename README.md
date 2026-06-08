@@ -10,6 +10,8 @@ São duas matrizes simples de clientes e contatos com oito e cinco colunas respe
 
 -- AUMENTAR MATRIZ --
 
+O aumentar matriz é bem simples ele basicamente cria uma nova matriz com um de tamanho a mais do que o anterior e copia todos os dados já colocados na antiga matriz. Se colocarmos isso dentro de um nenu solto por exemplo ele vai criar um espaço a mais porém não terá nenhum dado naquela linha, mas ao colocar em uma função que vá preencher esse espaço ele não dará nenhum erro.
+
 -- RELATORIOS -- 
 
 Alem da criação do menu de relatorios com 4 opções especificas, o relatorio foi idealizado de modo que: 
@@ -44,6 +46,10 @@ Se a linha for igual a 1, o código vai ser 1 e acabou. Agora se for maior, a ú
 Agora foi preciso criar um For para que o usuário percorresse as colunas dessa nova linha para preencher os dados do novo cliente ou contato.
 
 -- EXCLUIR --
+
+O exluirClientes começa pedindo qual o código do cliente que você deseja exluir após isso ele criar uma nova matriz com -1 espaço do que a matriz antiga e ele vai começar a varrer a matriz antiga sempre comparando se o codigo do cliente é diferente do que foi escolhido. Se a gente fizer isso em apenas um for comum irá dar erro porque quando ele chegar na libha com o código igual ele deixará aquela linha vazia e irá apagar o último cliente (o que não deveria ser feito), para consertar isso fizemos uma variável chamada linha que só aumentará se o código do cliente for diferente assim a linha não irá ser pulada e exluirá o cliente certo.
+Agora para excluir todos os contatos daquele cliente foi criado uma função separada que irá primeiro comparar o código do cliente com os contatos e aumentará em 1 um contador para que assim ele seja utilizado para diminuir o número certo de linhas da matrizContatos, dessa forma seguindo a mesma lógica anterior ele irá apenas copiar a matriz antiga ignorando as que forem iguais o código do cliente.Agora para retornar essas duas matrizes foi utilizado uma matriz tridimensional para que possa ser retornado as duas matrizes
+Agora para excluir apenas os contatos é bem simples ele apenas irá criar uma nova matriz de contatos com -1 linha e adicionar os dados antigos a essa nova matriz ignorando aquele que tenha o código de contato igual ao digitado.
 
 -- PESQUISAR POR NOME --
 
